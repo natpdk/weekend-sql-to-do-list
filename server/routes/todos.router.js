@@ -25,4 +25,28 @@ router.post('/', (req, res) => {
         });
 });
 
+//PUT route to update a task as completed:
+router.put('/:id', (req, res) => {
+    const id = req.params;
+    const queryText = 'UPDATE todos SET isComplete = TRUE WHERE id = $1;';
+    pool.query(queryText, id)
+        .then(() => res.sendStatus(200))
+        .catch((err) => {
+            console.error('Error updating the todo.', err);
+            res.sendStatus(500);
+        });
+});
+
+//DELETE route to remove a todo:
+router.delete('/:id', (req, red) =>{
+    const id = req.params;
+    const queryText = 'DELETE FROM todos WHERE id = $1;';
+    pool.query(queryText, id)
+        .then(() => res.sendStatus(200))
+        .catch((err) => {
+            console.error('Error deleting the todo.', err);
+            res.sendStatus(500);
+        });
+});
+
 module.exports = router;
