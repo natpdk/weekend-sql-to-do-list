@@ -28,12 +28,21 @@ function getTodos() {
 //Add a new todo:
 function addTodo() {
     const taskInput = document.querySelector('[data-testid="toDoTextInput"]');
-    const task = taskInput.ariaValueMax.trim();
+    const task = taskInput.value.trim();
 
-    axios.post('/todos', task)
+    axios.post('/todos', {task})
         .then(() => {
             taskInput.value = '';
             getTodos();
         })
         .catch((err) => console.error('Error adding a new todo.', err));
+};
+
+document.querySelector('[data-testid="submitButton"]').addEventListener('click', addTodo);
+
+//Mark a todo as complete:
+function markComplete(id) {
+    axios.put(`/todos/${id}`)
+        .then(() => getTodos())
+        .catch((err) => console.error('Error deleting the todo.', err));
 };
